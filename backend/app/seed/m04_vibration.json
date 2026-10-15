@@ -1,0 +1,180 @@
+{
+  "scenario_id": "m04-vibration-v1",
+  "synthetic": true,
+  "incident": {
+    "id": "INC-M04-001",
+    "title": "Spindle vibration above alarm threshold on CNC lathe M-04",
+    "machine_id": "M-04",
+    "severity": "HIGH",
+    "opened_at": "2026-10-14T10:05:00Z",
+    "part_number": "SH-12 shaft housing",
+    "why_it_matters": "M-04 produced shaft housings for three customer orders during the anomaly window; one batch has already shipped.",
+    "sensor": {
+      "record_id": "SR-90017",
+      "sensor_id": "VIB-M04-01",
+      "metric": "spindle_vibration_rms",
+      "unit": "mm/s",
+      "threshold": 7.1,
+      "reading": 9.8,
+      "reading_at": "2026-10-14T09:42:00Z",
+      "source": "Plant historian export (synthetic)",
+      "calibration_record_id": "CAL-338",
+      "last_in_tolerance_record_id": "SR-90011",
+      "last_in_tolerance_at": "2026-10-14T06:00:00Z"
+    },
+    "window": {
+      "start": "2026-10-14T06:00:00Z",
+      "end": "2026-10-14T10:00:00Z",
+      "basis": "From last in-tolerance reading SR-90011 (06:00Z) to machine stop (10:00Z)."
+    }
+  },
+  "machines": [
+    {"id": "M-04", "name": "CNC lathe 4", "line": "Line B"},
+    {"id": "M-02", "name": "CNC lathe 2", "line": "Line A"}
+  ],
+  "production_runs": [
+    {"id": "PR-1041", "machine_id": "M-04", "start": "2026-10-14T02:00:00Z", "end": "2026-10-14T05:55:00Z"},
+    {"id": "PR-1042", "machine_id": "M-04", "start": "2026-10-14T06:00:00Z", "end": "2026-10-14T08:00:00Z"},
+    {"id": "PR-1043", "machine_id": "M-04", "start": "2026-10-14T08:00:00Z", "end": "2026-10-14T10:00:00Z"},
+    {"id": "PR-1044", "machine_id": "M-02", "start": "2026-10-14T06:00:00Z", "end": "2026-10-14T10:00:00Z"}
+  ],
+  "batches": [
+    {"id": "B-2201", "run_id": "PR-1041", "qty": 240, "status": "IN_WAREHOUSE", "order_id": "SO-7780"},
+    {"id": "B-2202", "run_id": "PR-1042", "qty": 180, "status": "SHIPPED", "order_id": "SO-7781"},
+    {"id": "B-2203", "run_id": "PR-1042", "qty": 200, "status": "IN_WAREHOUSE", "order_id": "SO-7782"},
+    {"id": "B-2204", "run_id": "PR-1043", "qty": 220, "status": "IN_WAREHOUSE", "order_id": "SO-7783"},
+    {"id": "B-2205", "run_id": "PR-1043", "qty": 90, "status": "WIP", "order_id": null},
+    {"id": "B-2206", "run_id": "PR-1044", "qty": 300, "status": "IN_WAREHOUSE", "order_id": "SO-7784"}
+  ],
+  "orders": [
+    {"id": "SO-7780", "customer": "Customer W (synthetic)", "status": "OPEN"},
+    {"id": "SO-7781", "customer": "Customer X (synthetic)", "status": "SHIPPED"},
+    {"id": "SO-7782", "customer": "Customer Y (synthetic)", "status": "OPEN"},
+    {"id": "SO-7783", "customer": "Customer Z (synthetic)", "status": "OPEN"},
+    {"id": "SO-7784", "customer": "Customer W (synthetic)", "status": "OPEN"}
+  ],
+  "shipments": [
+    {"id": "SH-501", "order_id": "SO-7781", "batch_ids": ["B-2202"], "status": "SHIPPED", "shipped_at": "2026-10-14T09:30:00Z"}
+  ],
+  "resources": [
+    {"id": "CMM-1", "name": "Coordinate measuring machine", "available": true},
+    {"id": "PROF-1", "name": "Surface profilometer", "available": true},
+    {"id": "VA-1", "name": "Portable vibration analyzer", "available": true},
+    {"id": "CT-1", "name": "Industrial CT scanner", "available": false},
+    {"id": "LAB-1", "name": "Metallurgy lab", "available": true},
+    {"id": "QA-INSPECTOR", "name": "QA inspector (shift B)", "available": true}
+  ],
+  "safety_rules": [
+    {"id": "QR-7", "text": "Incident-scope batches may not ship before a quality disposition is recorded."}
+  ],
+  "gaps": [
+    {"id": "G-00", "title": "Vibration sensor calibration validity", "weight": 2, "decision_relevant": true, "batch_ids": [], "status": "RESOLVED", "resolved_by": "CAL-338", "why": "A faulty sensor would make the alarm itself unreliable."},
+    {"id": "G-01", "title": "Actual M-04 spindle condition unconfirmed", "weight": 3, "decision_relevant": true, "batch_ids": [], "status": "UNRESOLVED", "why": "Determines whether the alarm reflects a real machine fault and whether production can resume."},
+    {"id": "G-02", "title": "Dimensional/surface conformance of PR-1042 output unverified", "weight": 3, "decision_relevant": true, "batch_ids": ["B-2202", "B-2203"], "status": "UNRESOLVED", "why": "PR-1042 output includes the shipped batch B-2202 and warehouse batch B-2203."},
+    {"id": "G-03", "title": "Dimensional conformance of PR-1043 output unverified", "weight": 2, "decision_relevant": true, "batch_ids": ["B-2204", "B-2205"], "status": "UNRESOLVED", "why": "PR-1043 ran closest to the alarm reading."},
+    {"id": "G-05", "title": "Order linkage for WIP batch B-2205 missing", "weight": 1, "decision_relevant": true, "batch_ids": ["B-2205"], "status": "UNRESOLVED", "why": "Without the link the downstream customer exposure of B-2205 is UNKNOWN."}
+  ],
+  "gap_templates": {
+    "G-04": {"id": "G-04", "title": "Quality review evidence for nonconforming B-2204 incomplete", "weight": 3, "decision_relevant": true, "batch_ids": ["B-2204"], "why": "A failed inspection requires mandatory review evidence before any disposition."}
+  },
+  "restriction_templates": {
+    "MRB-B-2204": {"id": "MRB-B-2204", "batch_ids": ["B-2204"], "text": "Mandatory material review board (MRB) disposition required for B-2204."}
+  },
+  "candidates": [
+    {
+      "check_id": "C-01", "title": "CMM dimensional inspection of B-2203 and B-2204 samples",
+      "gap_ids_addressable": ["G-02", "G-03"], "cost": 450, "estimated_hours": 3,
+      "required_resources": ["CMM-1", "QA-INSPECTOR"], "target_batch_ids": ["B-2203", "B-2204"],
+      "allowed_statuses": ["IN_WAREHOUSE", "WIP", "ON_HOLD"],
+      "expected_result_schema": {"result": ["PASS", "FAIL", "INCONCLUSIVE", "NOT_PERFORMED"]},
+      "on_result": {"PASS": {"resolves": ["G-02", "G-03"]}, "FAIL": {"resolves": ["G-02", "G-03"], "creates": ["G-04"], "restricts": ["MRB-B-2204"]}},
+      "limitations": "Sample-based (n=5 per batch); does not establish that every part conforms.",
+      "provenance": "Synthetic QA plan QP-12 §4.2; cost/time are synthetic assumptions."
+    },
+    {
+      "check_id": "C-02", "title": "Profilometer surface check on retained PR-1042 samples",
+      "gap_ids_addressable": ["G-02"], "cost": 120, "estimated_hours": 1,
+      "required_resources": ["PROF-1"], "target_batch_ids": ["B-2203"],
+      "allowed_statuses": ["IN_WAREHOUSE", "WIP", "ON_HOLD"],
+      "expected_result_schema": {"result": ["PASS", "FAIL", "INCONCLUSIVE", "NOT_PERFORMED"]},
+      "on_result": {"PASS": {"resolves": ["G-02"]}, "FAIL": {"resolves": ["G-02"], "creates": ["G-04"], "restricts": ["MRB-B-2204"]}},
+      "limitations": "Chatter marks are a proxy for vibration damage; dimensional drift is not measured.",
+      "provenance": "Synthetic QA plan QP-12 §3.1; cost/time are synthetic assumptions."
+    },
+    {
+      "check_id": "C-03", "title": "Re-measure M-04 spindle vibration with portable analyzer",
+      "gap_ids_addressable": ["G-01"], "cost": 200, "estimated_hours": 1.5,
+      "required_resources": ["VA-1"], "target_batch_ids": [],
+      "allowed_statuses": [],
+      "expected_result_schema": {"result": ["PASS", "FAIL", "INCONCLUSIVE", "NOT_PERFORMED"]},
+      "on_result": {"PASS": {"resolves": ["G-01"]}, "FAIL": {"resolves": ["G-01"]}},
+      "limitations": "Machine idle measurement; may not reproduce load conditions.",
+      "provenance": "Synthetic maintenance procedure MP-4; cost/time are synthetic assumptions."
+    },
+    {
+      "check_id": "C-04", "title": "Reconcile MES/ERP trace records for B-2205",
+      "gap_ids_addressable": ["G-05"], "cost": 50, "estimated_hours": 0.5,
+      "required_resources": [], "target_batch_ids": ["B-2205"],
+      "allowed_statuses": ["IN_WAREHOUSE", "WIP", "ON_HOLD"],
+      "expected_result_schema": {"result": ["PASS", "FAIL", "INCONCLUSIVE", "NOT_PERFORMED"]},
+      "on_result": {"PASS": {"resolves": ["G-05"]}, "FAIL": {"resolves": ["G-05"]}},
+      "limitations": "Resolves the record link only; says nothing about part conformance.",
+      "provenance": "Synthetic traceability SOP TR-2."
+    },
+    {
+      "check_id": "C-07", "title": "CT scan of B-2204 samples for internal defects",
+      "gap_ids_addressable": ["G-03"], "cost": 800, "estimated_hours": 6,
+      "required_resources": ["CT-1"], "target_batch_ids": ["B-2204"],
+      "allowed_statuses": ["IN_WAREHOUSE", "WIP", "ON_HOLD"],
+      "expected_result_schema": {"result": ["PASS", "FAIL", "INCONCLUSIVE", "NOT_PERFORMED"]},
+      "on_result": {"PASS": {"resolves": ["G-03"]}, "FAIL": {"resolves": ["G-03"], "creates": ["G-04"], "restricts": ["MRB-B-2204"]}},
+      "limitations": "CT-1 is down for maintenance in this scenario.",
+      "provenance": "Synthetic QA plan QP-12 §5."
+    },
+    {
+      "check_id": "C-08", "title": "CMM inspection of B-2201 (PR-1041)",
+      "gap_ids_addressable": ["G-02"], "cost": 300, "estimated_hours": 2,
+      "required_resources": ["CMM-1"], "target_batch_ids": ["B-2201"],
+      "allowed_statuses": ["IN_WAREHOUSE", "WIP", "ON_HOLD"],
+      "expected_result_schema": {"result": ["PASS", "FAIL", "INCONCLUSIVE", "NOT_PERFORMED"]},
+      "on_result": {},
+      "limitations": "PR-1041 finished before the anomaly window.",
+      "provenance": "Naive all-batches strategy suggestion."
+    },
+    {
+      "check_id": "C-10", "title": "Re-verify vibration sensor calibration",
+      "gap_ids_addressable": ["G-00"], "cost": 150, "estimated_hours": 1,
+      "required_resources": ["VA-1"], "target_batch_ids": [],
+      "allowed_statuses": [],
+      "expected_result_schema": {"result": ["PASS", "FAIL", "INCONCLUSIVE", "NOT_PERFORMED"]},
+      "on_result": {},
+      "limitations": "Calibration record CAL-338 is already current.",
+      "provenance": "Synthetic metrology SOP MS-1."
+    },
+    {
+      "check_id": "C-11", "title": "Metallurgical sectioning of B-2204 sample for MRB",
+      "gap_ids_addressable": ["G-04"], "cost": 300, "estimated_hours": 4,
+      "required_resources": ["LAB-1"], "target_batch_ids": ["B-2204"],
+      "allowed_statuses": ["IN_WAREHOUSE", "WIP", "ON_HOLD"],
+      "expected_result_schema": {"result": ["PASS", "FAIL", "INCONCLUSIVE", "NOT_PERFORMED"]},
+      "on_result": {"PASS": {"resolves": ["G-04"]}, "FAIL": {"resolves": ["G-04"]}},
+      "limitations": "Destructive; consumes one sample part.",
+      "provenance": "Synthetic MRB procedure MRB-3."
+    }
+  ],
+  "actions": [
+    {"action_id": "A-01", "kind": "HOLD", "title": "Place quality hold on warehouse batches B-2203, B-2204", "target_batch_ids": ["B-2203", "B-2204"], "requires_role": "QUALITY_MANAGER", "effect": {"batch_status": "ON_HOLD"}},
+    {"action_id": "A-02", "kind": "HOLD", "title": "Place warehouse hold on B-2202", "target_batch_ids": ["B-2202"], "requires_role": "QUALITY_MANAGER", "effect": {"batch_status": "ON_HOLD"}},
+    {"action_id": "A-03", "kind": "ESCALATE", "title": "Open customer quality escalation for shipment SH-501 (B-2202)", "target_batch_ids": ["B-2202"], "requires_role": "QUALITY_MANAGER", "effect": {}},
+    {"action_id": "A-04", "kind": "RELEASE", "title": "Release B-2204 to shipping", "target_batch_ids": ["B-2204"], "requires_role": "QUALITY_MANAGER", "effect": {"batch_status": "IN_WAREHOUSE"}},
+    {"action_id": "A-05", "kind": "REVIEW", "title": "Record MRB disposition for B-2204", "target_batch_ids": ["B-2204"], "requires_role": "QUALITY_MANAGER", "requires_restriction": "MRB-B-2204", "effect": {"clears_restrictions": ["MRB-B-2204"]}},
+    {"action_id": "A-06", "kind": "RELEASE", "title": "Release WIP batch B-2205 to finished goods", "target_batch_ids": ["B-2205"], "requires_role": "QUALITY_MANAGER", "effect": {"batch_status": "IN_WAREHOUSE"}},
+    {"action_id": "A-07", "kind": "MAINTENANCE", "title": "Schedule M-04 spindle bearing maintenance (simulated work order)", "target_batch_ids": [], "requires_role": "QUALITY_MANAGER", "effect": {}},
+    {"action_id": "A-08", "kind": "SHIP", "title": "Ship B-2203 on schedule without inspection", "target_batch_ids": ["B-2203"], "requires_role": "QUALITY_MANAGER", "violates_rules": ["QR-7"], "effect": {}}
+  ],
+  "users": [
+    {"id": "u-op-1", "name": "Demo Operator", "role": "OPERATOR"},
+    {"id": "u-qm-1", "name": "Demo Quality Manager", "role": "QUALITY_MANAGER"},
+    {"id": "u-admin-1", "name": "Demo Admin", "role": "ADMIN"}
+  ]
+}
