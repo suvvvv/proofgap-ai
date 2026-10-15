@@ -11,6 +11,10 @@ def _bool(name: str, default: bool) -> bool:
 
 @dataclass(frozen=True)
 class Settings:
+    # STORE=firestore (deployed, Firebase/GCP) or sql (SQLite locally / Postgres via DATABASE_URL).
+    store: str = field(default_factory=lambda: os.getenv("STORE", "sql").strip().lower())
+    gcp_project: str | None = field(default_factory=lambda: os.getenv("GOOGLE_CLOUD_PROJECT"))
+    firestore_database: str = field(default_factory=lambda: os.getenv("FIRESTORE_DATABASE", "(default)"))
     database_url: str = field(default_factory=lambda: os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR.parent / 'proofgap.db'}"))
     scenario_path: Path = field(default_factory=lambda: Path(os.getenv("SCENARIO_PATH", BASE_DIR / "seed" / "m04_vibration.json")))
     # Gemini: set GEMINI_API_KEY (Google AI Studio) or GOOGLE_GENAI_USE_VERTEXAI=true + project/location.

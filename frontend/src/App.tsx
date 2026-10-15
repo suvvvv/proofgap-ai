@@ -27,6 +27,7 @@ export default function App() {
   const [busy, setBusy] = useState<string | null>(null);
   const [toast, setToast] = useState<Toast>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [health, setHealth] = useState<{ runtime: string; store: string; gemini_configured: boolean } | null>(null);
 
   setDemoUser(userId);
   const user = users.find((u) => u.id === userId);
@@ -43,6 +44,7 @@ export default function App() {
   useEffect(() => {
     api.users().then((r) => setUsers(r.users)).catch(() => {});
     api.baseline().then(setBaseline).catch(() => {});
+    api.health().then(setHealth).catch(() => {});
     refresh();
   }, [refresh]);
 
@@ -190,6 +192,12 @@ export default function App() {
           </section>
         )}
 
+        {health && (
+          <p className="small muted stack">
+            Running on: API {health.runtime === "cloud_run" ? "on Cloud Run" : "locally"} · data in {health.store === "firestore" ? "Cloud Firestore" : "SQL (local mode)"} ·
+            explanations by Gemini {health.gemini_configured ? "(configured)" : "(not configured: deterministic fallback)"}
+          </p>
+        )}
         <footer className="small muted">
           Prototype decision support on synthetic data, not certified quality assurance, defect prediction or machine control. Manufacturing — Intelligent Operations &amp; Industrial Efficiency · AI Builder Cup 2026.
         </footer>

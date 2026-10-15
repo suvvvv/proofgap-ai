@@ -56,6 +56,7 @@ async function req<T>(path: string, init: RequestInit = {}): Promise<T> {
 
 const base = (id: string) => `/api/incidents/${encodeURIComponent(id)}`;
 export const api = {
+  health: () => req<{ status: string; runtime: string; store: string; gemini_configured: boolean }>("/healthz"),
   users: () => req<{ simulated: boolean; users: User[] }>("/api/users"),
   incident: (id: string) => req<Incident>(base(id)),
   thread: (id: string) => req<Thread>(`${base(id)}/thread`),

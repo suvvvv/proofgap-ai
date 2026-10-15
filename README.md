@@ -17,14 +17,15 @@ Gemini explains the plan in grounded language. It is not the decision engine.
 ## Architecture
 
 ```
-React + TS (Vite)  ──HTTP──▶  FastAPI (Python)
+Firebase Hosting (React + TS)  ──/api rewrite──▶  Cloud Run: FastAPI (Python)  ──▶  Cloud Firestore
   renders server values         ├─ engine.py      deterministic traceability, gaps, F01–F07 rules, ranking
   never recomputes scores       ├─ service.py     transactions, optimistic versioning (409), append-only audit
                                 ├─ auth.py        SIMULATED demo identity → role looked up server-side (403)
                                 ├─ ai/grounding   curated payload + strict validator (strips unknown IDs, probabilities, causal claims)
                                 ├─ ai/gemini      google-genai structured output, timeout, deterministic fallback
                                 └─ baseline.py    T08 reproducible strategy comparison
-                              SQLAlchemy → SQLite (local) / Postgres via DATABASE_URL (deployed)
+                              stores/: Firestore (STORE=firestore, deployed) or SQL (SQLite locally / Postgres)
+                              Gemini via google-genai (explanations only)
 ```
 
 **Trust boundary.** The browser never supplies authorization truth: role and approver fields in request bodies are ignored. The backend owns traceability, constraints, scores, persistence and audit. Gemini gets curated evidence and can only return an explanation, which is checked against the record IDs in the payload.
@@ -44,17 +45,15 @@ cd frontend && npm ci && npm run dev    # http://localhost:5173 (proxies /api to
 
 Optional Gemini: `export GEMINI_API_KEY=...` (Google AI Studio), or `GOOGLE_GENAI_USE_VERTEXAI=true GOOGLE_CLOUD_PROJECT=... GOOGLE_CLOUD_LOCATION=...`. The model is set with `GEMINI_MODEL` (default `gemini-2.5-flash`). If Gemini isn't configured, or fails, the panel says *AI explanation unavailable* and everything else keeps working.
 
-## Deploy (Cloud Run, single container)
+## Deploy (Cloud Run + Firestore + Firebase Hosting)
 
 ```bash
-gcloud run deploy proofgap --source . --region us-central1 --allow-unauthenticated \
-  --set-env-vars GEMINI_MODEL=gemini-2.5-flash \
-  --set-secrets GEMINI_API_KEY=gemini-api-key:latest \
-  --set-env-vars DATABASE_URL=postgresql+psycopg://USER:PASS@/DB?host=/cloudsql/PROJECT:REGION:INSTANCE
-./scripts/smoke.sh https://<service-url>        # T09
+printf %s "$GEMINI_API_KEY" | gcloud secrets create gemini-api-key --data-file=- --project <project>
+firebase login
+./scripts/deploy.sh <project> asia-south1 <gcloud-account>   # enables APIs, creates Firestore, deploys, smoke-tests
 ```
 
-Without `DATABASE_URL`, the container uses SQLite on the instance's local disk. That storage is lost on restart, so it's fine for a demo but not durable. Keep secrets in Secret Manager or runtime environment variables, never in the repo or the UI.
+Cloud Run runs with `STORE=firestore`, so evidence, approvals and the audit log persist in Firestore transactions. Firebase Hosting serves the UI and rewrites `/api/**` to the Cloud Run service. Browsers never access Firestore directly (`firestore.rules` denies all). Keep secrets in Secret Manager, never in the repo or the UI. Run the Firestore tests locally with the emulator: `FIRESTORE_EMULATOR_HOST=localhost:8085 pytest`.
 
 ## API v1
 
@@ -111,6 +110,8 @@ Live Gemini output still has to be evaluated with a real key. The T06 tests use 
 
 ## Docs
 
-`docs/ProofGap_AI_Final_Implementation_Blueprint.docx` is the implementation blueprint this build follows.
+- `docs/ProofGap_AI_Final_Implementation_Blueprint.docx`: the implementation blueprint
+- `docs/SUBMISSION.md`: portal fields, brief description, video script, deck outline, checklist
+- `docs/TEAM_TASKS_GEMINI.md`: tasks for the Gemini/AI owner (live evaluation with `python -m app.ai.live_eval`)
 
 Product novelty: related quality agents, digital-thread tools and inspection-planning research already exist. ProofGap doesn't claim to be the first. Its methodology is a practical hackathon heuristic and would need real validation before any industrial use.

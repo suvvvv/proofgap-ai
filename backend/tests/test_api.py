@@ -148,3 +148,16 @@ def test_t07_resilience_without_gemini(client):
 def test_reset_requires_admin(client):
     assert client.post("/api/admin/reset", headers=QM).status_code == 403
     assert client.post("/api/admin/reset", headers={"X-Demo-User": "u-admin-1"}).status_code == 200
+
+
+def test_concurrent_writes_one_wins(client):
+    from concurrent.futures import ThreadPoolExecutor
+
+    def submit(check_id):
+        return client.post(f"/api/incidents/{INC}/evidence", headers=OP,
+                           json={"check_id": check_id, "result": "PASS", "expected_version": 1}).status_code
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        codes = sorted(pool.map(submit, ["C-02", "C-03", "C-04", "C-01"]))
+    assert codes.count(200) == 1 and codes.count(409) == 3
+    assert _plan(client)["version"] == 2

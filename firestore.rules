@@ -1,0 +1,10 @@
+rules_version = '2';
+// Browsers never talk to Firestore directly: the Cloud Run backend (service
+// account, Admin access) owns every read and write, including the audit log.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
