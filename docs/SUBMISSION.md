@@ -5,7 +5,7 @@
 | Field | Value / status |
 |---|---|
 | Challenge | **Manufacturing — Intelligent Operations & Industrial Efficiency** |
-| Prototype link (GCP / Cloud Run) | Cloud Run (live): https://proofgap-895375023314.asia-south1.run.app · Firebase Hosting: https://proofgap-ai.web.app (after `firebase deploy`) |
+| Prototype link (GCP / Cloud Run) | **https://proofgap-ai.web.app** (Firebase Hosting → Cloud Run). Direct Cloud Run: https://proofgap-895375023314.asia-south1.run.app |
 | Deck PDF (≤ 5 MB) | Use the **prescribed template** from the portal's "Download" link. Export to PDF. |
 | GitHub (public) | https://github.com/suvvvv/proofgap-ai |
 | Demo video (3–4 min) | YouTube unlisted or public Drive link. Test it in an incognito window. |
