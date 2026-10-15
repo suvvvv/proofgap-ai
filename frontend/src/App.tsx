@@ -94,7 +94,8 @@ export default function App() {
     <>
       <header className="topbar">
         <div className="brand">
-          <span className="logo" aria-hidden>◆</span> ProofGap AI
+          <img className="logo" src="/logo-mark.png" alt="" width={28} height={28} />
+          <span className="wordmark">ProofGap <span className="wordmark-ai">AI</span></span>
           <span className="tag">Synthetic demo · decision support only</span>
         </div>
         <div className="row">

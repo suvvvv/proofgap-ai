@@ -5,7 +5,8 @@
   --text: #17202b;
   --muted: #5b6675;
   --border: #dde1e7;
-  --accent: #1f5fd1;
+  --accent: #0b7a80;
+  --brand-navy: #1c3557;
   --accent-text: #ffffff;
   --alarm: #c2410c;
   --alarm-bg: #fff1e8;
@@ -25,14 +26,14 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0f1419; --surface: #171d24; --surface-2: #1f2730; --text: #e6eaf0; --muted: #97a2b2; --border: #2b3540;
-    --accent: #5b8ff0; --accent-text: #0b1220; --alarm: #fb923c; --alarm-bg: #2b1a10; --ok: #4ade80; --ok-bg: #11251a;
+    --accent: #34b8b3; --accent-text: #0b1220; --brand-navy: #e6eaf0; --alarm: #fb923c; --alarm-bg: #2b1a10; --ok: #4ade80; --ok-bg: #11251a;
     --warn: #facc15; --warn-bg: #2a2410; --unknown: #a78bfa; --unknown-bg: #221a38; --bad: #f87171; --bad-bg: #2d1515; --edge: #5f6b7c;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0f1419; --surface: #171d24; --surface-2: #1f2730; --text: #e6eaf0; --muted: #97a2b2; --border: #2b3540;
-  --accent: #5b8ff0; --accent-text: #0b1220; --alarm: #fb923c; --alarm-bg: #2b1a10; --ok: #4ade80; --ok-bg: #11251a;
+  --accent: #34b8b3; --accent-text: #0b1220; --brand-navy: #e6eaf0; --alarm: #fb923c; --alarm-bg: #2b1a10; --ok: #4ade80; --ok-bg: #11251a;
   --warn: #facc15; --warn-bg: #2a2410; --unknown: #a78bfa; --unknown-bg: #221a38; --bad: #f87171; --bad-bg: #2d1515; --edge: #5f6b7c;
   color-scheme: dark;
 }
@@ -61,7 +62,9 @@ ul, ol { padding-left: 0; list-style: none; margin: 0; }
 .topbar { position: sticky; top: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
   padding: 10px 16px; background: var(--surface); border-bottom: 1px solid var(--border); }
 .brand { font-weight: 700; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.logo { color: var(--accent); }
+.logo { display: block; width: 30px; height: 30px; padding: 2px; border-radius: 7px; background: #ffffff; }
+.wordmark { color: var(--brand-navy); font-size: 1.1rem; letter-spacing: -.01em; }
+.wordmark-ai { color: var(--accent); }
 .tag { font-size: .72rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--surface-2); color: var(--muted); margin-left: 6px; }
 
 .page { max-width: 1280px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }

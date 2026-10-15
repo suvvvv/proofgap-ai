@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/brand/logo.png" alt="ProofGap AI: evidence connects operations" width="560"></p>
+
 # ProofGap AI
 
 **Challenge:** Manufacturing — Intelligent Operations & Industrial Efficiency · AI Builder Cup 2026
