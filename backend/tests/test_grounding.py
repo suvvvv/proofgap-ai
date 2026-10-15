@@ -106,3 +106,19 @@ def test_not_configured(payload):
 def test_mentioning_probabilities_is_not_a_probability_claim(payload):
     res = run(payload, good(limitations="Scores are a deterministic heuristic, not defect probabilities."))
     assert res["status"] == "ok"
+
+
+def test_cache_reuses_validated_explanation_only(payload):
+    calls = []
+
+    def fn(_p):
+        calls.append(1)
+        return json.dumps(good())
+
+    gemini._cache.clear()
+    a = gemini.explain(payload, fn, timeout_s=2, use_cache=True)
+    b = gemini.explain(payload, fn, timeout_s=2, use_cache=True)
+    assert a["status"] == b["status"] == "ok" and b["cached"] is True and len(calls) == 1
+    gemini._cache.clear()
+    gemini.explain(payload, lambda _p: "{bad", timeout_s=2, use_cache=True)
+    assert not gemini._cache  # failures are never cached

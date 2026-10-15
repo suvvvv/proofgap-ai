@@ -117,7 +117,7 @@ def post_explain(incident_id: str, body: ExplainIn, store: Store = Depends(store
                        {"expected_version": body.expected_version, "current_version": data.version})
     payload = grounding.build_payload(sc, service.derive(sc, data), service.plan(store, incident_id, sc, data),
                                       service.thread(store, incident_id, sc, data), data.evidence)
-    return gemini.explain(payload, app_state["model_fn"])
+    return gemini.explain(payload, app_state["model_fn"], use_cache=True)
 
 
 @app.post("/api/incidents/{incident_id}/approve")
