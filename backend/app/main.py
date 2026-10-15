@@ -76,6 +76,7 @@ def scenario() -> dict:
 
 
 @app.get("/healthz")
+@app.get("/api/health")  # run.app reserves paths ending in "z", so Cloud Run needs this alias
 def healthz():
     return {"status": "ok", "runtime": "cloud_run" if os.getenv("K_SERVICE") else "local", "store": settings.store, "gemini_configured": app_state["model_fn"] is not None}
 

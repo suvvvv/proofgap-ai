@@ -4,7 +4,8 @@ set -euo pipefail
 BASE="${1:-http://localhost:8000}"
 INC=INC-M04-001
 j() { python3 -c "import sys,json;d=json.load(sys.stdin);print($1)"; }
-echo "health:   $(curl -sf "$BASE/healthz")"
+H=$(curl -sf "$BASE/api/health") || { echo "health check failed"; exit 1; }
+echo "health:   $H"
 curl -sf "$BASE/" | grep -q '<div id="root">' && echo "ui:       ok"
 V=$(curl -sf "$BASE/api/incidents/$INC" | j 'd["version"]')
 echo "version:  $V"

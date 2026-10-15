@@ -5,7 +5,7 @@
 | Field | Value / status |
 |---|---|
 | Challenge | **Manufacturing — Intelligent Operations & Industrial Efficiency** |
-| Prototype link (GCP / Cloud Run) | Firebase Hosting URL `https://<project>.web.app` (UI + API through Cloud Run), or the Cloud Run URL. Fill in after `scripts/deploy.sh`. |
+| Prototype link (GCP / Cloud Run) | Cloud Run (live): https://proofgap-895375023314.asia-south1.run.app · Firebase Hosting: https://proofgap-ai.web.app (after `firebase deploy`) |
 | Deck PDF (≤ 5 MB) | Use the **prescribed template** from the portal's "Download" link. Export to PDF. |
 | GitHub (public) | https://github.com/suvvvv/proofgap-ai |
 | Demo video (3–4 min) | YouTube unlisted or public Drive link. Test it in an incognito window. |
@@ -15,15 +15,15 @@
 
 > ProofGap AI helps a factory team answer a machine alarm with evidence, not guesswork. For a vibration alarm on CNC lathe M-04 it deterministically traces affected runs, batches, orders and shipments (missing links shown as UNKNOWN, never safe), lists open evidence gaps, removes infeasible or prohibited actions (e.g. holding an already-shipped batch) and ranks the remaining inspections with a transparent coverage/cost/time formula. Results are persisted and the plan recomputes; approvals are versioned and audited. Google services: Gemini (google-genai, structured JSON) writes a grounded explanation citing only real record IDs; a validator strips hallucinated IDs, probabilities and unsafe advice, with a non-AI fallback. Cloud Run hosts the FastAPI API and React UI. Cloud Firestore stores evidence, approvals and the append-only audit log in transactions. Firebase Hosting serves the UI and routes /api to Cloud Run. Synthetic data; decision support only.
 
-Each statement above must be true on the deployed build. Before pasting, open `/healthz` on the live URL and check that `"store": "firestore"` and `"gemini_configured": true`. The footer of the app shows the same.
+Each statement above must be true on the deployed build. Before pasting, open `/api/health` on the live URL and check that `"store": "firestore"` and `"gemini_configured": true`. The footer of the app shows the same.
 
 ## Required tech: where each one is used
 
 | Service | Where in the code | How to verify live |
 |---|---|---|
 | **Gemini** | `backend/app/ai/gemini.py`, `grounding.py` | Click "Generate grounded explanation"; the source shows the model name |
-| **Cloud Run** | `Dockerfile`, `scripts/deploy.sh` | `/healthz` → `"runtime": "cloud_run"` |
-| **Firestore** | `backend/app/stores/firestore.py` (transactions, audit sequence) | `/healthz` → `"store": "firestore"`; Firestore console shows `incidents/INC-M04-001/audit` |
+| **Cloud Run** | `Dockerfile`, `scripts/deploy.sh` | `/api/health` → `"runtime": "cloud_run"` |
+| **Firestore** | `backend/app/stores/firestore.py` (transactions, audit sequence) | `/api/health` → `"store": "firestore"`; Firestore console shows `incidents/INC-M04-001/audit` |
 | **Firebase** | `firebase.json` (Hosting + rewrites to Cloud Run), `firestore.rules` | `https://<project>.web.app` loads the app |
 
 ## Owner checklist

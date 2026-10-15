@@ -67,7 +67,7 @@ Cloud Run runs with `STORE=firestore`, so evidence, approvals and the audit log 
 | `POST /api/incidents/{id}/approve` | `{action_id, expected_version, justification}`; returns 403 for the wrong role, 409 for a stale version or an ineligible action |
 | `GET /api/incidents/{id}/audit` | append-only event timeline |
 | `GET /api/baseline` | T08 report |
-| `GET /healthz` | status (no secrets) |
+| `GET /api/health` | status (no secrets) |
 
 Errors are `{code, message, details}`. The canonical OpenAPI spec is served at `/docs` and `/openapi.json`.
 
