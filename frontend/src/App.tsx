@@ -132,7 +132,15 @@ export default function App() {
           </dl>
         </section>
 
-        <section className="card">
+        <nav className="workflow-nav" aria-label="Incident response workflow">
+          <span className="workflow-label small muted">Incident response</span>
+          <a href="#traceability">1. Trace affected work</a>
+          <a href="#evidence-gaps">2. Find evidence gaps</a>
+          <a href="#ranked-checks">3. Choose and record a check</a>
+          <a href="#grounded-explanation">4. Explain and review</a>
+        </nav>
+
+        <section id="traceability" className="card anchor-target">
           <h2>Digital thread <span className="muted small">deterministic traceability</span></h2>
           <TraceGraph thread={thread} />
           <div className="legend small">
@@ -143,7 +151,7 @@ export default function App() {
         </section>
 
         <div className="grid">
-          <section className="card">
+          <section id="evidence-gaps" className="card anchor-target">
             <h2>Evidence gaps <span className="muted small">{plan.unresolved_gaps.length} unresolved</span></h2>
             <ul className="gaps">
               {plan.unresolved_gaps.map((g) => (
@@ -161,7 +169,7 @@ export default function App() {
             )}
           </section>
 
-          <section className="card">
+          <section id="ranked-checks" className="card anchor-target">
             {recording ? (
               <EvidenceForm key={recording.check_id} check={recording} busy={busy === "evidence"} onSubmit={submitEvidence} onCancel={() => setRecording(null)} />
             ) : (
@@ -170,13 +178,13 @@ export default function App() {
           </section>
         </div>
 
-        <section className="card">
+        <section id="grounded-explanation" className="card anchor-target">
           <h2>Grounded explanation <span className="muted small">Gemini</span></h2>
           <ExplainPanel plan={plan} exp={exp} busy={busy === "explain"} onExplain={explain} />
         </section>
 
         <div className="grid">
-          <section className="card">
+          <section id="decisions" className="card anchor-target">
             <h2>Decisions</h2>
             <ApprovalPanel plan={plan} user={user} busy={busy === "approve"} onApprove={approve} />
           </section>

@@ -8,7 +8,7 @@
 | Prototype link (GCP / Cloud Run) | **https://proofgap-ai.web.app** (Firebase Hosting → Cloud Run). Direct Cloud Run: https://proofgap-895375023314.asia-south1.run.app |
 | Deck PDF (≤ 5 MB) | Use the **prescribed template** from the portal's "Download" link. Export to PDF. |
 | GitHub (public) | https://github.com/suvvvv/proofgap-ai |
-| Demo video (3–4 min) | YouTube unlisted or public Drive link. Test it in an incognito window. |
+| Demo video (3 min max) | Public YouTube or Vimeo link, or a public Google Drive link. Test it while signed out. |
 | Brief description (≤ 1024 chars) | Below. 963 characters. |
 
 ### Brief description (paste as is)
@@ -33,23 +33,23 @@ Each statement above must be true on the deployed build. Before pasting, open `/
 - [ ] `firebase login` (personal account), then `./scripts/deploy.sh <project> asia-south1 suvarnasanapathi2001@gmail.com`
 - [ ] `./scripts/smoke.sh <url>` passes on the **Firebase** URL and the **Cloud Run** URL.
 - [ ] Reset the demo data before recording and before submitting: select Demo Admin, then click "Reset demo".
-- [ ] Record the video (script below), 3:00–3:50 long.
+- [ ] Record the video (script below), no longer than 3:00.
 - [ ] Fill the deck template (outline below) and export a PDF under 5 MB.
 - [ ] Friend commits `docs/gemini_eval_results.md` (see `TEAM_TASKS_GEMINI.md`).
 - [ ] Open every link in incognito. Submit early and screenshot the confirmation.
 - [ ] Keep the Cloud Run service up until evaluation ends. `--min-instances 1` avoids cold starts; don't delete the project.
 
-## Video script (about 3:30)
+## Video script (3:00 maximum)
 
 | Time | Show | Say |
 |---|---|---|
-| 0:00–0:25 | Incident card | "9.8 mm/s vibration on M-04 versus a 7.1 limit. Three customer orders, and one batch already shipped." |
-| 0:25–0:55 | Digital thread | "Deterministic trace: PR-1042 and PR-1043 lead to four batches. B-2205 has no order link, so it's UNKNOWN, not safe. Out-of-window runs are excluded." |
-| 0:55–1:30 | Ranked checks plus excluded list | "Four feasible checks, with the formula shown. The CT scan is excluded because the scanner is down (F03). A hold on shipped B-2202 is excluded (F01); use escalation instead." |
-| 1:30–2:05 | Record C-02 PASS, reload, record C-01 FAIL | "The result is persisted. G-02 is resolved, C-01's coverage drops, and the order changes. The FAIL creates G-04 and an MRB restriction, and release is now blocked." |
-| 2:05–2:35 | Gemini panel | "Gemini explains the plan with cited record IDs. A validator removes anything it can't ground." |
-| 2:35–3:05 | Operator approve → 403; manager approve → work order; audit timeline | "Simulated approval: the operator is rejected and the quality manager approves. Every step is versioned in the audit log in Firestore." |
-| 3:05–3:30 | Baseline table, footer showing Cloud Run / Firestore / Gemini | "Across six synthetic cases: zero policy violations and the least unresolved evidence. Ties are reported too. Running on Cloud Run, Firestore, Firebase Hosting and Gemini." |
+| 0:00–0:20 | Incident card | "9.8 mm/s vibration on M-04 versus a 7.1 limit. Three customer orders, and one batch already shipped." |
+| 0:20–0:45 | Digital thread | "Deterministic trace: PR-1042 and PR-1043 lead to four batches. B-2205 has no order link, so it's UNKNOWN, not safe. Out-of-window runs are excluded." |
+| 0:45–1:10 | Ranked checks plus excluded list | "Four feasible checks, with the formula shown. The CT scan is excluded because the scanner is down (F03). A hold on shipped B-2202 is excluded (F01); use escalation instead." |
+| 1:10–1:45 | Record C-02 PASS, reload, record C-01 FAIL | "The result is persisted. G-02 is resolved, C-01's coverage drops, and the order changes. The FAIL creates G-04 and an MRB restriction, and release is now blocked." |
+| 1:45–2:10 | Gemini panel | "Gemini explains the plan with cited record IDs. A validator removes anything it can't ground." |
+| 2:10–2:40 | Operator approve → 403; manager approve → work order; audit timeline | "Simulated approval: the operator is rejected and the quality manager approves. Every step is versioned in the audit log in Firestore." |
+| 2:40–3:00 | Baseline summary and footer showing Cloud Run / Firestore / Gemini | "Across six synthetic cases, ProofGap leaves less unresolved evidence with zero policy violations than the naive baseline. Synthetic comparison only." |
 
 ## Deck outline (map these onto the template's slides)
 

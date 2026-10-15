@@ -55,7 +55,7 @@ export function ExplainPanel({ plan, exp, busy, onExplain }: { plan: Plan; exp: 
   return (
     <div>
       <div className="row between">
-        <p className="small muted">Gemini explains the backend plan from a curated payload. It cannot change records, scores or approvals; unknown IDs are stripped.</p>
+        <p className="small muted">Gemini explains the backend plan from a curated payload. The explanation separates cited facts from hypotheses, shows missing evidence and ranking rationale, and cannot change records, scores or approvals. Unknown IDs are stripped.</p>
         <button className="primary" onClick={onExplain} disabled={busy}>{busy ? "Asking Gemini…" : exp ? "Regenerate" : "Generate grounded explanation"}</button>
       </div>
       {stale && <p className="warn small">Explanation is for version {exp!.evidence_version}; plan is now version {plan.version}. Regenerate.</p>}
@@ -152,9 +152,15 @@ export function AuditTimeline({ events }: { events: AuditEvent[] }) {
 const STRATS: [string, string][] = [["proofgap", "ProofGap"], ["naive_all_batches", "Naive all-batches"], ["severity_first", "Severity-first"]];
 
 export function BaselinePanel({ data }: { data: Baseline }) {
+  const proofgap = data.totals.proofgap;
+  const naive = data.totals.naive_all_batches;
   return (
     <div>
       <p className="small muted">{data.method}</p>
+      <p className="baseline-summary">
+        Across {data.cases.length} synthetic cases, ProofGap used {proofgap.inspections} inspections vs {naive.inspections} for naive all-batches, cost {proofgap.cost} vs {naive.cost} synthetic units, left unresolved gap weight {proofgap.unresolved_weight} vs {naive.unresolved_weight}, and had {proofgap.policy_violations} vs {naive.policy_violations} policy violations.
+        <span className="small muted"> Synthetic comparison only; these are not real-world savings.</span>
+      </p>
       <div className="table-scroll">
         <table>
           <thead><tr><th>Strategy (6 cases)</th><th>Inspections</th><th>Cost</th><th>Hours</th><th>Policy violations</th><th>Unresolved gaps (weight)</th></tr></thead>
