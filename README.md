@@ -43,7 +43,7 @@ uv venv --python 3.12 .venv && uv pip install -p .venv -r requirements-dev.txt  
 cd frontend && npm ci && npm run dev    # http://localhost:5173 (proxies /api to :8000)
 ```
 
-Optional Gemini: `export GEMINI_API_KEY=...` (Google AI Studio), or `GOOGLE_GENAI_USE_VERTEXAI=true GOOGLE_CLOUD_PROJECT=... GOOGLE_CLOUD_LOCATION=...`. The model is set with `GEMINI_MODEL` (default `gemini-2.5-flash`). If Gemini isn't configured, or fails, the panel says *AI explanation unavailable* and everything else keeps working.
+Optional Gemini: `export GEMINI_API_KEY=...` (Google AI Studio), or `GOOGLE_GENAI_USE_VERTEXAI=true GOOGLE_CLOUD_PROJECT=... GOOGLE_CLOUD_LOCATION=...`. The model is set with `GEMINI_MODEL` (default `gemini-3.5-flash`). If Gemini isn't configured, or fails, the panel says *AI explanation unavailable* and everything else keeps working.
 
 ## Deploy (Cloud Run + Firestore + Firebase Hosting)
 

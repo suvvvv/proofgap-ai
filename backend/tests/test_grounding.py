@@ -101,3 +101,8 @@ def test_model_timeout(payload):
 def test_not_configured(payload):
     res = gemini.explain(payload, None)
     assert res["status"] == "unavailable" and res["fallback"]["recommendation_rationale"].startswith("Top-ranked")
+
+
+def test_mentioning_probabilities_is_not_a_probability_claim(payload):
+    res = run(payload, good(limitations="Scores are a deterministic heuristic, not defect probabilities."))
+    assert res["status"] == "ok"

@@ -41,7 +41,14 @@ class Explanation(BaseModel):
 
 
 ID_PATTERN = re.compile(r"\b(?:[A-Z]{1,8}(?:-[A-Z0-9]+)+|F0\d)\b")
-PROBABILITY_PATTERN = re.compile(r"\d+(?:\.\d+)?\s*(?:%|percent)|\bprobabilit|\bchance of\b|\blikelihood of \d", re.I)
+# A probability *claim*: a percentage, or probability/likelihood/chance given a value.
+# Mentioning the word (e.g. "scores are not probabilities") is allowed.
+PROBABILITY_PATTERN = re.compile(
+    r"\d+(?:\.\d+)?\s*(?:%|percent)"
+    r"|\b(?:probability|likelihood|chance|odds|risk)\b(?:\s+\S+){0,4}?\s+(?:is|of|at|=|around|about)\s+"
+    r"(?:about\s+|around\s+|approximately\s+|roughly\s+)?(?:\d|high|low|very|significant|moderate)",
+    re.I,
+)
 CAUSAL_PATTERN = re.compile(r"\b(caused|causes|root cause|due to|because of|resulted from|led to)\b", re.I)
 UNSAFE_PATTERN = re.compile(
     r"\b(ship|release|dispatch|deliver)\w*\b[^.]{0,80}\b(without|before|skip\w*|bypass\w*)\b[^.]{0,40}\b(review|inspection|approval|disposition|MRB)\b"

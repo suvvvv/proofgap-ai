@@ -6,7 +6,7 @@ uses, and writes a markdown report.
 
   export GEMINI_API_KEY=...            # or Vertex AI env vars
   python -m app.ai.live_eval --list-models
-  python -m app.ai.live_eval --model gemini-2.5-flash --repeats 3 --out ../docs/gemini_eval_results.md
+  python -m app.ai.live_eval --model gemini-3.5-flash --repeats 3 --out ../docs/gemini_eval_results.md
 """
 
 from __future__ import annotations
@@ -61,7 +61,8 @@ def raw_model_fn(model: str):
             contents="Explain this incident using only this payload:\n" + json.dumps(payload),
             config=types.GenerateContentConfig(system_instruction=grounding.SYSTEM_INSTRUCTION,
                                                response_mime_type="application/json",
-                                               response_schema=grounding.Explanation, temperature=0.2),
+                                               response_schema=grounding.Explanation, temperature=0.2,
+                                               automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True)),
         )
         return resp.text or ""
 

@@ -25,7 +25,7 @@ export GEMINI_API_KEY=<your key from https://aistudio.google.com/apikey>
 
 ## Tasks
 
-1. **Pick the model.** Run `.venv/bin/python -m app.ai.live_eval --list-models`. Choose the current Flash model that supports structured JSON output; the default is `gemini-2.5-flash`. If it's retired, tell the owner the new name so it goes into `GEMINI_MODEL` at deploy time.
+1. **Pick the model.** Run `.venv/bin/python -m app.ai.live_eval --list-models`. Choose the current Flash model that supports structured JSON output; the default is `gemini-3.5-flash`. If it's retired, tell the owner the new name so it goes into `GEMINI_MODEL` at deploy time.
 2. **Run the live evaluation**, then commit the report:
    ```bash
    .venv/bin/python -m app.ai.live_eval --model <model> --repeats 3 --out ../docs/gemini_eval_results.md

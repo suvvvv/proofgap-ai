@@ -27,7 +27,7 @@ else
 fi
 
 "${G[@]}" run deploy proofgap --source . --region "$REGION" --allow-unauthenticated \
-  --set-env-vars "STORE=firestore,GOOGLE_CLOUD_PROJECT=$PROJECT,GEMINI_MODEL=${GEMINI_MODEL:-gemini-2.5-flash}" \
+  --set-env-vars "STORE=firestore,GOOGLE_CLOUD_PROJECT=$PROJECT,GEMINI_MODEL=${GEMINI_MODEL:-gemini-3.5-flash}" \
   ${SECRET_FLAG[@]+"${SECRET_FLAG[@]}"} --min-instances 1 --max-instances 3 --memory 512Mi
 
 URL=$("${G[@]}" run services describe proofgap --region "$REGION" --format='value(status.url)')

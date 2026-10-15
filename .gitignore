@@ -9,3 +9,7 @@ __pycache__/
 .pytest_cache/
 .DS_Store
 *.tsbuildinfo
+
+# local secrets
+docs/gemini-key.md
+*key*.md

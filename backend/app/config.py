@@ -20,8 +20,12 @@ class Settings:
     # Gemini: set GEMINI_API_KEY (Google AI Studio) or GOOGLE_GENAI_USE_VERTEXAI=true + project/location.
     gemini_api_key: str | None = field(default_factory=lambda: os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY"))
     use_vertex: bool = field(default_factory=lambda: _bool("GOOGLE_GENAI_USE_VERTEXAI", False))
-    gemini_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "gemini-2.5-flash"))
-    gemini_timeout_s: float = field(default_factory=lambda: float(os.getenv("GEMINI_TIMEOUT_S", "20")))
+    gemini_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "gemini-3.5-flash"))
+    gemini_fallback_models: list = field(default_factory=lambda: [m.strip() for m in os.getenv(
+        "GEMINI_FALLBACK_MODELS", "gemini-flash-latest,gemini-3.5-flash-lite").split(",") if m.strip()])
+    gemini_thinking_level: str = field(default_factory=lambda: os.getenv("GEMINI_THINKING_LEVEL", "LOW"))
+    gemini_timeout_s: float = field(default_factory=lambda: float(os.getenv("GEMINI_TIMEOUT_S", "25")))  # per request
+    gemini_total_timeout_s: float = field(default_factory=lambda: float(os.getenv("GEMINI_TOTAL_TIMEOUT_S", "45")))
     allow_demo_reset: bool = field(default_factory=lambda: _bool("ALLOW_DEMO_RESET", True))
     static_dir: Path = field(default_factory=lambda: Path(os.getenv("STATIC_DIR", BASE_DIR.parent.parent / "frontend" / "dist")))
 
