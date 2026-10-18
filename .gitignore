@@ -13,3 +13,4 @@ __pycache__/
 # local secrets
 docs/gemini-key.md
 *key*.md
+docs/VIDEO_SCRIPT.md
